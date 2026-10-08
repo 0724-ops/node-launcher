@@ -1,0 +1,44 @@
+# 与旧专用启动器（com.sganggs.stronghold-launcher）完全隔离：
+# 不同 appId → 不同升级 GUID / 不同卸载项 / 不同默认安装目录与快捷方式，
+# 两者可在同一台设备共存，互不覆盖。
+appId: com.nodelauncher.desktop
+productName: Node Launcher
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist-electron/**/*
+  - dist/**/*
+  - package.json
+
+# 内置 Node 运行时（可选）。目录为空时运行时会走「按需下载」路径。
+extraResources:
+  - from: resources/runtimes
+    to: runtimes
+    filter:
+      - '**/*'
+
+# 性能上报脚本需要被目标进程以真实文件路径 require，故从 asar 中解包
+asarUnpack:
+  - dist-electron/core/launch/metrics-reporter.js
+
+win:
+  target:
+    # nsis：常规安装包（NSIS 会把插件解到 %TEMP%，临时目录异常时无法运行）
+    - target: nsis
+      arch: [x64]
+    # zip：免安装分发（解压即用，全程不写临时目录），用于 %TEMP% 受限的机器
+    - target: zip
+      arch: [x64]
+  icon: build/icon.ico
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Node Launcher
+  artifactName: ${productName} Setup ${version}.${ext}
