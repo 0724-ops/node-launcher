@@ -235,7 +235,3 @@ tests/                              # vitest：清单/版本约束/分类/计划
 
 安装包与旧专用启动器互不覆盖：`appId` 为 `com.nodelauncher.desktop`，默认安装目录与快捷方式名
 均为 `Node Launcher`。zip 目标是为「`%TEMP%` 不可用 / 不想装」的场景准备的（见常见问题）。
-
-## 许可证
-
-GPL-3.0
